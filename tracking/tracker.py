@@ -50,7 +50,7 @@ class Tracker:
         if read_from_stub and stub_path is not None and os.path.exists(stub_path):
             with open(stub_path,'rb') as f:
                 tracks = pickle.load(f)
-            return tracks
+            return tracks #Use existing tracks object if it exists
 
         detections = self.detect_frames(frames)
 
@@ -98,7 +98,7 @@ class Tracker:
 
         if stub_path is not None:
             with open(stub_path,'wb') as f:
-                pickle.dump(tracks,f)
+                pickle.dump(tracks,f) #Saving
 
         return tracks
     
@@ -177,8 +177,8 @@ class Tracker:
         team_1 = team_1_num_frames/(team_1_num_frames+team_2_num_frames)
         team_2 = team_2_num_frames/(team_1_num_frames+team_2_num_frames)
 
-        cv2.putText(frame, f"Team 1 Ball Control: {team_1*100:.2f}%",(1400,900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
-        cv2.putText(frame, f"Team 2 Ball Control: {team_2*100:.2f}%",(1400,950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
+        cv2.putText(frame, f"Team 1 Time of Possession: {team_1*100:.2f}%",(1400,900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
+        cv2.putText(frame, f"Team 2 Time of Possession: {team_2*100:.2f}%",(1400,950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
 
         return frame
 
