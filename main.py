@@ -1,5 +1,5 @@
 from utils import read_video, save_video
-from tracking import Tracker
+from tracking.tracker import Tracker
 
 def main():
     
@@ -10,8 +10,14 @@ def main():
     tracks = tracker.get_object_tracks(video_frames,
                                        read_from_stub=True,
                                        stub_path="stubs/track_stubs.pkl")
+    
+    tracker.add_position_to_tracks(tracks)
 
-    save_video(video_frames, "output_videos/output_video.avi")
+    
+    ## Draw object Tracks
+    output_video_frames = tracker.draw_annotations(video_frames, tracks,team_ball_control)
+
+    save_video(output_video_frames, "output_videos/output_video.avi")
 
 
 if __name__ == '__main__':
