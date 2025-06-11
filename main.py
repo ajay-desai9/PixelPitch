@@ -4,6 +4,7 @@ from utils import read_video, save_video
 from tracking.tracker import Tracker
 from player_ball_assignment import PlayerBallAssigner
 import cv2
+from camera_movement_estimator import CameraMovementEstimator
 
 def main():
     
@@ -17,6 +18,14 @@ def main():
                                        stub_path="stubs/track_stubs.pkl")
     #Get object positions
     tracker.add_position_to_tracks(tracks)
+
+    # Camera movement estimator
+    camera_movement_estimator = CameraMovementEstimator(video_frames[0])
+    camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,
+                                                                                read_from_stub=True,
+                                                                                stub_path='stubs/camera_movement_stub.pkl')
+    camera_movement_estimator.add_adjust_positions_to_tracks(tracks,camera_movement_per_frame)
+
 
     #Interpolate Ball Positions
     tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
