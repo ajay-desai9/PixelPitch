@@ -1,3 +1,4 @@
+from team_assignment.team_assignment import TeamAssigner
 from utils import read_video, save_video
 from tracking.tracker import Tracker
 
@@ -14,6 +15,9 @@ def main():
     #Get object positions
     tracker.add_position_to_tracks(tracks)
 
+    #Interpolate Ball Positions
+    tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
+    
     #Player team assignment
     team_assigner = TeamAssigner()
     team_assigner.assign_team_color(video_frames[0], 
