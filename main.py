@@ -5,6 +5,7 @@ from tracking.tracker import Tracker
 from player_ball_assignment import PlayerBallAssigner
 import cv2
 from camera_movement_estimator import CameraMovementEstimator
+from view_transformer import ViewTransformer
 
 def main():
     
@@ -25,6 +26,11 @@ def main():
                                                                                 read_from_stub=True,
                                                                                 stub_path='stubs/camera_movement_stub.pkl')
     camera_movement_estimator.add_adjust_positions_to_tracks(tracks,camera_movement_per_frame)
+
+    # View Trasnformer
+    view_transformer = ViewTransformer()
+    view_transformer.add_transformed_position_to_tracks(tracks)
+
 
 
     #Interpolate Ball Positions
@@ -62,7 +68,13 @@ def main():
     # Draw object tracks
     output_video_frames = tracker.draw_annotations(video_frames, tracks,team_ball_control)
 
+    # Draw Camera movement
+    output_video_frames = camera_movement_estimator.draw_camera_movement(output_video_frames,camera_movement_per_frame)
+
+
     save_video(output_video_frames, "output_videos/output_video.mp4")
+
+    
 
 
 
